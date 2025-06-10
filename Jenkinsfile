@@ -39,7 +39,7 @@ pipeline{
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 docker pull inggawahmi/nodejsgoof:0.1'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 docker rm --force mongo'
-                    sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 run --detach --name mongodb -p 27017:27017 mongo:3'
+                    sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 run --detach --name mongo -p 27017:27017 mongo:3'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 rm --force nodejsgoof'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 run -it --detach --name nodejsgoof --network host inggawahmi/nodejsgoof:0.1'
                 }
