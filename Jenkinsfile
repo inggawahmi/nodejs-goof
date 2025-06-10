@@ -35,7 +35,7 @@ pipeline{
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: "DevelopmentSSHKey", keyFileVariable: 'keyfile')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: "DeploymentSSHKey", keyFileVariable: 'keyfile')]) {
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 docker pull inggawahmi/nodejsgoof:0.1'
                     sh 'ssh -i ${keyfile} -o StrictHostKeyChecking=no deploymentserver@192.168.1.11 docker rm --force mongodb'
