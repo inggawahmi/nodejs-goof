@@ -9,4 +9,6 @@ WORKDIR /usr/src/goof
 RUN npm install
 EXPOSE 3001
 EXPOSE 9229
+USER node
+
 ENTRYPOINT ["npm", "start"]
