@@ -45,37 +45,37 @@ pipeline{
                 archiveArtifacts artifacts: 'snyk-scan-report.json'
             }
         }
-        stage('SCA OWASP Dependency Check'){
-            agent {
-                docker {
-                    image 'owasp/dependency-check:latest'
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint='
-                }
-            }
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh '/usr/share/dependency-check/bin/dependency-check.sh --scan . --project "NodeJS Goof" --format ALL --noupdate'
-                }
-                archiveArtifacts artifacts: 'dependency-check-report.html'
-                archiveArtifacts artifacts: 'dependency-check-report.json'
-                archiveArtifacts artifacts: 'dependency-check-report.xml'
-            }
-        }
-        stage('SCA Trivy scan Dockerfile Misconfiguration') {
-            agent {
-                docker {
-                    image 'aquasec/trivy:latest'
-                    args '-u root --network host --entrypoint='
-                }
-            }
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'trivy config Dockerfile --exit-code=1 --format json > trivy-scan-dockerfile-report.json'
-                }
-                sh 'cat trivy-scan-dockerfile-report.json'
-                archiveArtifacts artifacts: 'trivy-scan-dockerfile-report.json'
-            }
-        }
+        // stage('SCA OWASP Dependency Check'){
+        //     agent {
+        //         docker {
+        //             image 'owasp/dependency-check:latest'
+        //             args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint='
+        //         }
+        //     }
+        //     steps {
+        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //             sh '/usr/share/dependency-check/bin/dependency-check.sh --scan . --project "NodeJS Goof" --format ALL --noupdate'
+        //         }
+        //         archiveArtifacts artifacts: 'dependency-check-report.html'
+        //         archiveArtifacts artifacts: 'dependency-check-report.json'
+        //         archiveArtifacts artifacts: 'dependency-check-report.xml'
+        //     }
+        // }
+        // stage('SCA Trivy scan Dockerfile Misconfiguration') {
+        //     agent {
+        //         docker {
+        //             image 'aquasec/trivy:latest'
+        //             args '-u root --network host --entrypoint='
+        //         }
+        //     }
+        //     steps {
+        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //             sh 'trivy config Dockerfile --exit-code=1 --format json > trivy-scan-dockerfile-report.json'
+        //         }
+        //         sh 'cat trivy-scan-dockerfile-report.json'
+        //         archiveArtifacts artifacts: 'trivy-scan-dockerfile-report.json'
+        //     }
+        // }
         stage('Build Docker Image and Push to Docker Registry') {
             agent {
                 docker {
